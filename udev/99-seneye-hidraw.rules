@@ -1,0 +1,2 @@
+# Seneye SUD (24f7:2204) → readable hidraw for non-root services
+SUBSYSTEM=="hidraw", SUBSYSTEMS=="usb", ATTRS{idVendor}=="24f7", ATTRS{idProduct}=="2204", MODE="0666", TAG+="uaccess"

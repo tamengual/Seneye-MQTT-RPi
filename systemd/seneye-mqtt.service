@@ -1,0 +1,27 @@
+[Unit]
+Description=Seneye → MQTT bridge (pyseneye)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=tamen
+Group=tamen
+WorkingDirectory=/home/tamen
+ExecStartPre=/bin/sh -c 'for i in $(seq 1 8); do [ -e /dev/hidraw0 ] && exit 0; sleep 1; done; echo "WARNING: /dev/hidraw0 not found (starting anyway)"'
+Environment=MQTT_HOST=192.168.7.253
+Environment=MQTT_PORT=1883
+Environment=MQTT_USERNAME=mqtt-user
+Environment=MQTT_PASSWORD=2Kqhd560!
+Environment=MQTT_TOPIC=seneye/state
+Environment=MQTT_QOS=1
+Environment=POLL_SECONDS=10
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/tamen/seneye-venv/bin/python /home/tamen/seneye_mqtt_daemon.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
